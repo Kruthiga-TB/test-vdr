@@ -2,6 +2,4 @@ from django.apps import AppConfig
 
 
 class AccountsConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'app.accounts'        # ← must be full dotted path
-    label = 'accounts'
+    name = 'apps.accounts'
