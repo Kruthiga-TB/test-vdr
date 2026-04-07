@@ -1,4 +1,4 @@
-# from django.shortcuts import render
+from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -38,18 +38,22 @@ class PlanCreateView(APIView):
             },
             status=status.HTTP_400_BAD_REQUEST
         )
+        
 
-# from rest_framework.views import APIView
-# from rest_framework.response import Response
-# from rest_framework import status
-# from .serializers import PlanSerializer
+class PlanCreateView(APIView):
+    def get(self, request):
+        plans = Plan.objects.all()
+        serializer = PlanSerializer(plans, many=True)
 
-# class PlanCreateView(APIView):
-#     def post(self, request):
-#         serializer = PlanSerializer(data=request.data)
+        return Response(
+            {
+                "message": "Plans fetched successfully",
+                "data": serializer.data
+            },
+            status=status.HTTP_200_OK
+        
+        )
+        
 
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response({'message': 'This plan add.', 'data': serializer.data}, status=status.HTTP_201_CREATED)
+    
 
-#         return Response({'message': 'This plan Not add.', 'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
