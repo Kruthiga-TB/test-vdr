@@ -92,8 +92,15 @@ def create_superadmin_and_company(validated_data):
     - Notify owner for approval
     """
     from apps.companies.models import Company
+   
+    # Check if domain already registered
+    if Company.objects.filter(domain=validated_data['company_domain']).exists():
+        raise ValueError("A company with this domain already exists.")
 
-    # Create company first
+    # Check if email already registered
+    if User.objects.filter(email=validated_data['email']).exists():
+        raise ValueError("This email is already registered.")
+
     company = Company.objects.create(
         name=validated_data['company_name'],
         domain=validated_data['company_domain'],
