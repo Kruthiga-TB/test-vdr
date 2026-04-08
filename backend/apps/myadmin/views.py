@@ -6,7 +6,7 @@ from .serializers import PlanSerializer
 from .models import Plan
 
 
-class PlanCreateView(APIView):
+class PlanCreate(APIView):
 
     def post(self, request):
         plan_name = request.data.get("name")
