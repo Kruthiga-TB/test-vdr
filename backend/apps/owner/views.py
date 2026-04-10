@@ -5,6 +5,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
+from .serializers import SuperAdminSerializer
+from .services import SuperAdminService
 
 from apps.accounts.models import User
 from apps.accounts.services import approve_superadmin
@@ -47,6 +49,7 @@ class PendingRegistrationsView(APIView):
                 'company_name': user.company.name if user.company else None,
                 'company_domain': user.company.domain if user.company else None,
                 'registered_at': user.date_joined.strftime('%Y-%m-%d %H:%M'),
+                'payment' : user.payment
             }
             for user in pending_users
         ]
@@ -136,3 +139,16 @@ class RejectSuperAdminView(APIView):
                 {'error': 'User not found or already processed'},
                 status=status.HTTP_404_NOT_FOUND
             )
+        
+
+class ListAllSuperadminDetails(APIView):
+    def get(self, request):
+        super_admin = SuperAdminService().get_all_superadmins()
+        if not super_admin.exists():
+            return Response(
+                {"message" : "No superadmin found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        serializer = SuperAdminSerializer(super_admin, many=True)
+        return Response(serializer.data)

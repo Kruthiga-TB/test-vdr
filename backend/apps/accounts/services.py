@@ -168,8 +168,9 @@ def approve_superadmin(user):
     - Send activation link to SuperAdmin
     """
     # Mark as approved but still inactive until they click activation link
-    user.is_approved = True
-    user.save()
+    if user.payment == True:
+        user.is_approved = True
+        user.save()
 
     # Generate activation token
     token = generate_activation_token()

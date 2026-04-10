@@ -40,13 +40,20 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
-    'rest_framework_simplejwt.token_blacklist',
+    'drf_spectacular',
 
     # local apps
     'apps.accounts',
     'apps.companies',
     'apps.owner',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema'
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -91,6 +98,10 @@ DATABASES = {
     }
 }
 
+AUTHENTICATION_BACKENDS = [
+    'apps.accounts.backend.EmailBackend',
+]
+
 
 
 # Password validation
@@ -111,6 +122,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
+SIMPLE_JWT = {
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
@@ -140,3 +156,5 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 # DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
 OWNER_EMAIL = config('OWNER_EMAIL')
 FRONTEND_URL = config('FRONTEND_URL')
+
+AUTH_USER_MODEL = 'accounts.User'

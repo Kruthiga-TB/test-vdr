@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class OwnerConfig(AppConfig):
-    name = 'owner'
+    name = 'apps.owner'

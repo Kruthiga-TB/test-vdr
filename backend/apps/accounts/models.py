@@ -63,6 +63,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(null=True, blank=True)
 
+    payment = models.BooleanField(default=False)
+
     # These two lines fix the clash
     groups = models.ManyToManyField(
         'auth.Group',
