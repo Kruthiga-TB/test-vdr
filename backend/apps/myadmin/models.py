@@ -11,7 +11,8 @@ class Plan(models.Model):
 
     name = models.CharField(max_length=20, choices=PLAN_CHOICES, unique=True)
 
-    price = models.DecimalField(max_digits=10, decimal_places=2, blank=True)
+    # price = models.DecimalField(max_digits=10, decimal_places=2, blank=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
 
     max_users = models.IntegerField(null=True, blank=True)
     storage_gb = models.IntegerField(null=True, blank=True)

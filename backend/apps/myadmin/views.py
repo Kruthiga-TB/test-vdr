@@ -4,14 +4,20 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import PlanSerializer
 from .models import Plan
+# from drf_yasg.utils import swagger_auto_schema
+# from drf_yasg import openapi
+# from rest_framework.generics import GenericAPIView
+# from rest_framework import generics
+# from rest_framework.generics import CreateAPIView
 
 
 class PlanCreate(APIView):
+    queryset = Plan.objects.all()
+    serializer_class = PlanSerializer
 
     def post(self, request):
         plan_name = request.data.get("name")
 
-        # 🔥 Check duplicate plan
         if Plan.objects.filter(name=plan_name).exists():
             return Response(
                 {"message": "Plan already exists"},
@@ -38,7 +44,9 @@ class PlanCreate(APIView):
             },
             status=status.HTTP_400_BAD_REQUEST
         )
-        
+
+
+
 
 class PlanCreateView(APIView):
     def get(self, request):
