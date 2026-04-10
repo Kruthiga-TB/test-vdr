@@ -26,7 +26,7 @@ class SuperAdminRegistrationSerializer(serializers.ModelSerializer):
         ]
 
     PERSONAL_EMAIL_DOMAINS = [
-    'gmail.com', 'yahoo.com', 'hotmail.com',
+    'yahoo.com', 'hotmail.com',
     'outlook.com', 'icloud.com', 'protonmail.com',
     'aol.com', 'mail.com', 'zoho.com'
 ]

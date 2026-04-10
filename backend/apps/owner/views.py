@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from .serializers import SuperAdminSerializer
+from .serializers import SuperAdminSerializer, SuperAdminApprovalSerializer
 from .services import SuperAdminService
 
 from apps.accounts.models import User
@@ -73,23 +73,26 @@ class ApproveSuperAdminView(APIView):
     Triggers activation email
     """
     permission_classes = [IsOwner]
+    serilizer_class = SuperAdminApprovalSerializer
 
     def post(self, request, user_id):
         try:
             user = User.objects.get(
                 id=user_id,
                 role='super_admin',
-                is_approved=False
+                is_approved=False,
             )
 
-            approve_superadmin(user)
+            SuperAdminService.super_admin_approval(User)
+            if user.payment == True:
+                approve_superadmin(user)
 
-            return Response(
-                {
-                    'message': f'{user.name} has been approved. Activation link sent to {user.email}',
-                },
-                status=status.HTTP_200_OK
-            )
+                return Response(
+                    {
+                        'message': f'{user.name} has been approved. Activation link sent to {user.email}',
+                    },
+                    status=status.HTTP_200_OK
+                )
 
         except User.DoesNotExist:
             return Response(
